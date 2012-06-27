@@ -1,5 +1,5 @@
 var reds = require('reds')
-	,search = reds.createSearch('pets')
+	,search = reds.createSearch('url')
 	,list = require('./list')
 	,agent = require('superagent');
 
