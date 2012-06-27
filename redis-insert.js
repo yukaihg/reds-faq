@@ -1,16 +1,12 @@
 var reds = require('reds')
-	,search = reds.createSearch('url')
-	,list = require('./list')
+	,search = reds.createSearch('answers')
 	,agent = require('superagent')
-	,listNLP = require('./fakeData');
+	,fakeData = require('./fakeData')
+	,numAnswers = fakeData.length;
 
 search.client.flushall();
 
-var numAnswers = listNLP.length;
-var keyPair;
-search = reds.createSearch('answers');
-
-listNLP.forEach(function(answer, i){
+fakeData.forEach(function(answer, i){
 
 	search.index(answer.question, JSON.stringify(answer), function(err){
 		if(err) throw err;
