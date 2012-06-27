@@ -6,9 +6,7 @@ var express = require('express')
 	, routes = require('./routes')
 	, http = require('http')
 	, reds = require('reds')
-	, search = reds.createSearch('url')
-	, urlList = require('./list')
-	, answersList = require('./listNLP');
+	, search = reds.createSearch('answers');
 
 var app = express.createServer();
 
@@ -28,35 +26,18 @@ app.configure('development', function(){
 app.get('/', routes.index);
 
 app.get('/search/:query', function(request, response){
-	search = reds.createSearch('url');
 	var query = request.params.query;
 
 	search.query(query).end(function(err, ids){
-		var result = ids.map(function(id){
-			return urlList[id];
-		});
 
-		return response.send(result);
+		var res = ids.map(function(val){return JSON.parse(val);})
+		return response.send(res);
 	});
-});
 
-app.get('/nlp/:query', function(request, response){
-	var search = reds.createSearch('questions')
-	var query = request.params.query;
-
-	console.log("Nlp query is: " + query);
-
-	search.query(query).end(function(err, ids){
-		var result = ids.map(function(id){
-			return answersList[id];
-		});
-
-		return response.send(result);
-	});
 
 });
 
 app.listen(3000, function(){
-	console.log("Server started listening on port %d, in %s", app.address().port, app.settings.env);
+	console.log("Server started listening on port %d, in %s mode", app.address().port, app.settings.env);
 });
 
