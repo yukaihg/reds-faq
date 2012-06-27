@@ -12,10 +12,23 @@ $(document).ready(function(){
 			console.log(data);
 
 			data.forEach(function(result){
-				results.append('<li> <b>Question</b>: ' + result.question +
-					'<br/><b>Answer</b>: '+ result.answer +'</li><br/>')
-			})
+				appendSearchResults(result);
+			});
+
 		});
 	});
 
-})
+});
+
+function appendSearchResults(result){
+
+	var output = '<p><b>Question</b>: ' + result.question + '<br/><b>Answer</b>:<ul>';
+
+	result.answer.forEach(function(answer){
+		output += '<li>' + answer + '</li>' + '<br/>';
+	});
+
+	output += '</ul></p>';
+
+	$('#results').append(output);
+}

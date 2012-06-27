@@ -34,7 +34,6 @@ app.get('/search/:query', function(request, response){
 		return response.send(res);
 	});
 
-
 });
 
 app.listen(3000, function(){
