@@ -7,6 +7,6 @@ Useful modules explored in this application:
 ## Installation
 
 1. Install and run Redis
-2. run "run.js" to feed data into Redis
+2. run "redis-insert.js" to feed data into Redis
 3. start "app.js"
 4. search away
