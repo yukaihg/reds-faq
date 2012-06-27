@@ -7,7 +7,8 @@ var express = require('express')
 	, http = require('http')
 	, reds = require('reds')
 	, search = reds.createSearch('url')
-	, urlList = require('./list');
+	, urlList = require('./list')
+	, answersList = require('./listNLP');
 
 var app = express.createServer();
 
@@ -26,10 +27,8 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 
-app.get('/search', function(request, response){
-});
-
 app.get('/search/:query', function(request, response){
+	search = reds.createSearch('url');
 	var query = request.params.query;
 
 	search.query(query).end(function(err, ids){
@@ -42,7 +41,18 @@ app.get('/search/:query', function(request, response){
 });
 
 app.get('/nlp/:query', function(request, response){
+	var search = reds.createSearch('questions')
+	var query = request.params.query;
 
+	console.log("Nlp query is: " + query);
+
+	search.query(query).end(function(err, ids){
+		var result = ids.map(function(id){
+			return answersList[id];
+		});
+
+		return response.send(result);
+	});
 
 });
 

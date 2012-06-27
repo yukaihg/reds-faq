@@ -16,4 +16,22 @@ $(document).ready(function(){
 			})
 		});
 	});
+
+
+	$('#nlpBox').keyup(function(){
+
+		var val = $(this).val().trim()
+			, results = $('#nlpResults').empty();
+
+		if(!val) return;
+
+		jQuery.get("/nlp/" + val, function(data, textStatus, xhr){
+			console.log("got response");
+			console.log(data);
+
+			data.forEach(function(result){
+				results.append('<li>' + result + '</li>')
+			})
+		});
+	});
 })
