@@ -6,7 +6,7 @@ var express = require('express')
 	, routes = require('./routes')
 	, http = require('http')
 	, reds = require('reds')
-	, search = reds.createSearch('pets')
+	, search = reds.createSearch('url')
 	, urlList = require('./list');
 
 var app = express.createServer();
@@ -39,6 +39,11 @@ app.get('/search/:query', function(request, response){
 
 		return response.send(result);
 	});
+});
+
+app.get('/nlp/:query', function(request, response){
+
+
 });
 
 app.listen(3000, function(){
