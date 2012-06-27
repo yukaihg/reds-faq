@@ -1,0 +1,11 @@
+{
+	"name": "reds-faq",
+	"version": "0.0.1",
+	"private": true,
+	"dependencies": {
+		"express": "2.5.10",
+		"jade": "*",
+		"reds": ">=0.0.1",
+		"superagent": ">=0.0.1"
+	}
+}
