@@ -27,6 +27,7 @@ app.get('/', routes.index);
 
 app.get('/search/:query', function(request, response){
 	var query = request.params.query;
+	query = query.toLowerCase();
 
 	queryController.getQuery(query, function(results){
 		return response.send(results);
@@ -35,8 +36,7 @@ app.get('/search/:query', function(request, response){
 
 app.post('/search', function(request, response){
 	var query = request.body.query;
-
-	console.log(query);
+	query = query.toLowerCase();
 
 	queryController.addQuestion(query, function(){
 		queryController.getQuery(query, function(results){
@@ -44,8 +44,6 @@ app.post('/search', function(request, response){
 		});
 	});
 });
-
-
 
 app.listen(3000, function(){
 	console.log("Server started listening on port %d, in %s mode", app.address().port, app.settings.env);

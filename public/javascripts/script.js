@@ -1,19 +1,13 @@
 $(document).ready(function(){
 
-
-	$('#searchBox').keyup(function(){
-
+	$('#searchBox').on("input", function(){
 		var val = $(this).val().trim()
 			, results = $('#results').empty()
-			, logMsg = 	$('#logMsg').empty()
-			, searchBox = $('#search');
-
-		$('#questionInputBox').remove();
+			, questionBox = $('#question');
 
 		if(!val) return;
 
 		jQuery.get("/search/" + val, function(data, textStatus, xhr){
-
 			if(data.length !== 0){
 				console.log(data);
 				data.forEach(function(result, i){
@@ -21,11 +15,12 @@ $(document).ready(function(){
 				});
 			}
 			else {
-				logMsg.append('<p>не найдено</p>');
-				searchBox.append(submitQuestion());
+				$('#questionBox').remove();
+				questionBox.append(submitQuestion());
 			}
 		});
 	});
+
 
 	$('form').bind('submit', function(){
 		console.log('submit');
@@ -34,8 +29,7 @@ $(document).ready(function(){
 			, results = $('#results').empty()
 			, data = {};
 
-		$('#questionInputBox').remove();
-		$('#logMsg').empty();
+		$('#questionBox').remove();
 
 		data.query = val;
 
@@ -59,14 +53,23 @@ function appendSearchResults(result, i){
 
 	var output = '<p><b>Question</b>: ' + result.question + '<br/><b>Answer</b>:<ul>';
 
-	result.answer.forEach(function(answer){
-		output += '<li>' + answer + '</li>' +'<br/>';
-	});
-
+	if(result.answer.length === 0){
+		output += "<li>It's a trap</li><br/>"
+	}
+	else{
+		result.answer.forEach(function(answer){
+			output += '<li>' + answer + '</li><br/>';
+		});
+	}
 	output += '</ul></p>';
 	$('#results').append(output);
+	$('#questionBox').remove();
 }
 
 function submitQuestion(){
-	return '<input type="submit" value="ask" id="questionInputBox">';
+
+	var output = 	'<div id="questionBox">' +
+					'<p>No match found. ' +
+					'<input type="submit" value="Ask a question"></p></div>';
+	return output;
 }

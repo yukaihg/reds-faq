@@ -8,24 +8,18 @@ exports.getQuery = function(query, callback){
 	search.query(query).end(function(err, ids){
 
 		var numOfIds = ids.length;
-		console.log(numOfIds);
 		//if no ids' turn up, return empty result
 		if(numOfIds === 0){
-			console.log('no id found');
+			console.log('Search result empty, nothing turned up');
 			callback(results);
 		}
 
 		//fetch the corresponding fakeData object for each id
 		ids.forEach(function(id, i){
-
-			console.log(id);
-
+			console.log("found: %s", id);
 			search.client.get(id, function(err, data){
-
-				console.log('data: ' + data);
-
 				results.push(JSON.parse(data));
-				console.log(results);
+
 				if(--numOfIds === 0){
 					callback(results);
 				}
@@ -36,7 +30,7 @@ exports.getQuery = function(query, callback){
 
 exports.addQuestion = function(question, callback){
 
-	var data = {'question':question, 'answer': ['no one cares']};
+	var data = {'question':question, 'answer': []};
 
 	search.index(question, question, function(err){
 		if (err) throw err;
