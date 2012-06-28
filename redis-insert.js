@@ -9,7 +9,7 @@ fakeData.forEach(function(data, i){
 
 	//converts data.question into a constant map
 	//inserts data.question with id = i, into redis
-	fullTextSearch.index(data.question, i, function(err){
+	fullTextSearch.index(data.question, data.question, function(err){
 		if(err) throw err;
 
 		console.log("Indexed question for full text search: %s", data.question);
@@ -17,7 +17,7 @@ fakeData.forEach(function(data, i){
 	});
 
 	//inserts data object with key = i, into redis
-	fullTextSearch.client.set(i, JSON.stringify(data), function(err){
+	fullTextSearch.client.set(data.question, JSON.stringify(data), function(err){
 		if(err) throw err;
 
 		console.log("Indexed question in db: %s", data.question);

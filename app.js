@@ -31,8 +31,21 @@ app.get('/search/:query', function(request, response){
 	queryController.getQuery(query, function(results){
 		return response.send(results);
 	});
-
 });
+
+app.post('/search', function(request, response){
+	var query = request.body.query;
+
+	console.log(query);
+
+	queryController.addQuestion(query, function(){
+		queryController.getQuery(query, function(results){
+			return response.send(results);
+		});
+	});
+});
+
+
 
 app.listen(3000, function(){
 	console.log("Server started listening on port %d, in %s mode", app.address().port, app.settings.env);
