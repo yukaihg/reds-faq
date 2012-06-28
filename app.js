@@ -6,7 +6,7 @@ var express = require('express')
 	, routes = require('./routes')
 	, http = require('http')
 	, reds = require('reds')
-	, search = reds.createSearch('answers');
+	, search = reds.createSearch('search');
 
 var app = express.createServer();
 
@@ -26,13 +26,33 @@ app.configure('development', function(){
 app.get('/', routes.index);
 
 app.get('/search/:query', function(request, response){
-	var query = request.params.query;
+	var query = request.params.query
+		,results = [];
 
 	search.query(query).end(function(err, ids){
 
-		var res = ids.map(function(val){return JSON.parse(val);})
-		return response.send(res);
+		var numOfIds = ids.length;
+
+		//if no ids' turn up, return empty result
+		if(numOfIds === 0){
+			return response.send(results);
+		}
+
+		//fetch the corresponding fakeData object for each id
+		ids.forEach(function(id, i){
+			search.client.get(id, function(err, data){
+
+				results.push(JSON.parse(data));
+
+				if(--numOfIds === 0){
+					return response.send(results);
+				}
+			});
+		});
+
 	});
+
+
 
 });
 

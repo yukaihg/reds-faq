@@ -1,25 +1,35 @@
 var reds = require('reds')
-	,search = reds.createSearch('answers')
-	,agent = require('superagent')
+	,fullTextSearch = reds.createSearch('search')
 	,fakeData = require('./fakeData')
-	,numAnswers = fakeData.length;
+	,fakeDataLength = fakeData.length * 2;
 
-search.client.flushall();
+fullTextSearch.client.flushall();
 
-fakeData.forEach(function(answer, i){
+fakeData.forEach(function(data, i){
 
-	search.index(answer.question, JSON.stringify(answer), function(err){
+	//converts data.question into a constant map
+	//inserts data.question with id = i, into redis
+	fullTextSearch.index(data.question, i, function(err){
 		if(err) throw err;
 
-		console.log("Indexed answer: %s", answer.question);
-		--numAnswers || done();
+		console.log("Indexed question for full text search: %s", data.question);
+		--fakeDataLength || done();
 	});
+
+	//inserts data object with key = i, into redis
+	fullTextSearch.client.set(i, JSON.stringify(data), function(err){
+		if(err) throw err;
+
+		console.log("Indexed question in db: %s", data.question);
+		--fakeDataLength || done();
+	})
 });
 
 function done(){
 	console.log("Done indexing");
-	search.client.save();
-	search.client.end();
+
+	fullTextSearch.client.save();
+	fullTextSearch.client.end();
 }
 
 

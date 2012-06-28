@@ -5,8 +5,6 @@
 	"dependencies": {
 		"express": "2.5.10",
 		"jade": "*",
-		"reds": ">=0.0.1",
-		"superagent": ">=0.0.1",
-		"natural": "*"
+		"reds": ">=0.0.1"
 	}
 }

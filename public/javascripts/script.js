@@ -8,12 +8,13 @@ $(document).ready(function(){
 		if(!val) return;
 
 		jQuery.get("/search/" + val, function(data, textStatus, xhr){
-			console.log("got response");
-			console.log(data);
 
-			data.forEach(function(result){
-				appendSearchResults(result);
-			});
+			if(data.length !== 0){
+				console.log(data);
+				data.forEach(function(result){
+					appendSearchResults(result);
+				});
+			}
 
 		});
 	});
