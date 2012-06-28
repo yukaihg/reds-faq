@@ -2,7 +2,6 @@
 
 Useful modules explored in this application:
 * [reds](https://github.com/visionmedia/reds) is a light-weight Redis search for node.js.
-* [superagent](https://github.com/visionmedia/superagent) is a clientside http request library & Node.js module
 
 ## Installation
 
